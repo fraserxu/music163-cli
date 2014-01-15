@@ -31,4 +31,4 @@ player.play(233931);
 player.download(233931);
 ```
 
-#### Note: Please only download the song when you have legal copyright to it.
+#### Note: <i>Please only download the song when you have legal copyright to it.</i>
