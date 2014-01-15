@@ -1,0 +1,28 @@
+{
+  "name": "music163-client",
+  "version": "0.0.1",
+  "description": "music 163 client",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fraserxu/music163-client.git"
+  },
+  "keywords": [
+    "music163",
+    "player"
+  ],
+  "author": "fraserxu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fraserxu/music163-client/issues"
+  },
+  "dependencies": {
+    "music163": "0.0.1",
+    "hyperquest": "~0.2.0",
+    "lame": "~1.0.3",
+    "speaker": "0.0.10"
+  }
+}
