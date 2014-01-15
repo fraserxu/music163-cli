@@ -9,7 +9,6 @@ module.exports = {
     music163.detail(id, function(err, res) {
       if(err) throw err
 
-      console.log('res', res.songs)
       var uri = res.songs[0].mp3Url
       hyperquest(uri)
         .pipe(new lame.Decoder())
