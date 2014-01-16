@@ -9,7 +9,7 @@ The easiest way to use music163-client is to install it with npm: `npm install m
 
 API
 ---
-Currently, there's only three (useful) methods available:
+Currently, there's only two (useful) methods available:
 
 ```javascript
 play: function(id)
