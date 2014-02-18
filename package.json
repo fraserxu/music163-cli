@@ -5,16 +5,14 @@
     "music163": "bin/cmd.js"
   },
   "description": "music 163 client in command line",
-  "scripts": {
-    "test": "node test/test.js"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/fraserxu/music163-cli.git"
   },
   "keywords": [
     "music163",
-    "player"
+    "player",
+    "cli"
   ],
   "author": "fraserxu",
   "license": "MIT",
