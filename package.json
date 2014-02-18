@@ -22,7 +22,6 @@
   "dependencies": {
     "music163": "0.0.1",
     "hyperquest": "~0.2.0",
-    "lame": "~1.0.3",
-    "speaker": "0.0.10"
+    "player": "~0.1.1"
   }
 }

@@ -28,9 +28,9 @@ module.exports = {
       var filename = res.songs[0].name
       var filepath = path || ''
 
-      hyperquest(uri)
+      var req = hyperquest(uri)
         .pipe(fs.createWriteStream(filepath + filename + '.mp3'))
-        .on('end', function() {
+      req.on('end', function() {
           console.log('Song: ' + filename + '.mp3 download success.' )
         })
     })
