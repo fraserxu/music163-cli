@@ -1,14 +1,17 @@
 {
-  "name": "music163-client",
+  "name": "music163-cli",
   "version": "0.0.1",
-  "description": "music 163 client",
+  "bin": {
+    "music163": "bin/cmd.js"
+  },
+  "description": "music 163 client in command line",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/fraserxu/music163-client.git"
+    "url": "git://github.com/fraserxu/music163-cli.git"
   },
   "keywords": [
     "music163",
@@ -17,7 +20,7 @@
   "author": "fraserxu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fraserxu/music163-client/issues"
+    "url": "https://github.com/fraserxu/music163-cli/issues"
   },
   "dependencies": {
     "music163": "0.0.1",

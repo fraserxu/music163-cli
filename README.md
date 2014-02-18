@@ -1,7 +1,7 @@
-music163-client
+music163-cli
 ========
 
-A command line client for music163
+A command line cli for music163
 
 # example
 
@@ -44,10 +44,10 @@ usage:
 With [npm](https://npmjs.org) do:
 
 ```
-npm install -g music163-client
+npm install -g music163-cli
 ```
 
-to get the music163-client command.
+to get the music163-cli command.
 
 #### Note: <i>Please only download the song when you have legal copyright to it.</i>
 
