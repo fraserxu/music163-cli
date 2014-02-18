@@ -22,7 +22,7 @@
     "url": "https://github.com/fraserxu/music163-cli/issues"
   },
   "dependencies": {
-    "music163": "0.0.1",
+    "music163": "~0.1.0",
     "hyperquest": "~0.2.0",
     "player": "~0.1.1",
     "minimist": "0.0.7"

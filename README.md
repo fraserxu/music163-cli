@@ -1,11 +1,11 @@
 music163-cli
 ========
 
-A command line cli for music163
+A command line client for music163
 
 # example
 
-To start , seach by `music163 search "whatever"`:
+To search by keyword , type `music163 search "whatever"`:
 
 ```
 $ music163 search "whatever"
