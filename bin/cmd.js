@@ -97,6 +97,7 @@ else if (argv._[0] === 'search') {
           src: song.mp3Url
         })
       })
+      play(songs)
     })
   } else if (type === 'playlist') {
     api.playlist(id, function(err, res) {
@@ -120,6 +121,7 @@ else if (argv._[0] === 'search') {
           src: song.mp3Url
         })
       })
+      play(songs)
     })
   } else if (type === 'detail') {
     api.detail(id, function(err, res) {
@@ -131,6 +133,7 @@ else if (argv._[0] === 'search') {
           src: song.mp3Url
         })
       })
+      play(songs)
     })
   }
 } else if (argv._[0] === 'download') {
