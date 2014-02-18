@@ -13,21 +13,28 @@ else if (argv._[0] === 'search') {
   api.search(keyword, function(err, res) {
     if (err) console.log(err)
     var data = res.result
-    console.log('artists', data.artists)
+
+    console.log('artists')
+    data.artists.forEach(function(artist) {
+      console.log(artist.name + ' ID: ' + artist.artist.id)
+    })
+
     console.log()
     console.log('albums')
     data.albums.forEach(function(album) {
-      console.log(album.name + ' by ' + album.artist.name)
+      console.log(album.name + ' by ' + album.artist.name + ' ID: ' + album.id)
     })
     console.log()
+
     console.log('playlists')
     data.playlists.forEach(function(playlist) {
-      console.log(playlist.name + ' created by ' + playlist.creator.nickname)
+      console.log(playlist.name + ' created by ' + playlist.creator.nickname + ' ID: ' + playlist.id)
     })
     console.log()
+
     console.log('songs')
     data.songs.forEach(function(song) {
-      console.log(song.name)
+      console.log(song.name + ' ID: ' + song.id)
     })
   })
 } else if (argv._[0] === 'album') {
