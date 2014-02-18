@@ -22,6 +22,7 @@
   "dependencies": {
     "music163": "0.0.1",
     "hyperquest": "~0.2.0",
-    "player": "~0.1.1"
+    "player": "~0.1.1",
+    "minimist": "0.0.7"
   }
 }

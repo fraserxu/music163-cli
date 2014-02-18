@@ -17,3 +17,6 @@ usage:
 
   music163 play -t TYPE ID
     Play song by type and ID
+
+  music163 download -t TYPE ID
+    Download song by type and ID
