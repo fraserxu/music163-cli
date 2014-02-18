@@ -1,34 +1,57 @@
 music163-client
 ========
 
-This is the client for music163
+A command line client for music163
 
-Install
----
-The easiest way to use music163-client is to install it with npm: `npm install music163-client`
+# example
 
-API
----
-Currently, there's only two (useful) methods available:
+To start , seach by `music163 search "whatever"`:
 
-```javascript
-play: function(id)
+```
+$ music163 search "whatever"
 ```
 
-```javascript
-download: function(id, path)
+# usage
+
+```
+usage:
+
+  music163 search KEYWORDS
+    Search songs by keywords
+
+  music163 album ID
+    Get song list by album ID
+
+  music163 playlist ID
+    Get song list by playlist ID
+
+  music163 dj ID
+    Get song list by dj ID
+
+  music163 detail ID
+    Get song detail by ID
+
+  music163 play -t TYPE ID
+    Play song by type and ID
+
+  music163 download -t TYPE ID
+    Download song by type and ID
+
 ```
 
-Example
--------
-```javascript
-var player = require('..')
+# install
 
-// play
-player.play(233931);
+With [npm](https://npmjs.org) do:
 
-// download
-player.download(233931);
 ```
+npm install -g music163-client
+```
+
+to get the music163-client command.
 
 #### Note: <i>Please only download the song when you have legal copyright to it.</i>
+
+# license
+
+MIT
+
