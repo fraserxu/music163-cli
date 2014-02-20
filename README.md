@@ -8,18 +8,19 @@ A command line client for music163
 To search by keyword , type `music163 search "whatever"`:
 
 ```
-➜  music163-cli git:(master) music163 search "Red Hot Chili Peppers"
-artists
+$ music163-cli music163 search "Red Hot Chili Peppers"
+
+Artists
 Red Hot Chili Peppers ID: 41927
 
-albums
+Albums
 Red Hot Chili Peppers by Red Hot Chili Peppers ID: 1985328
 Best of Red Hot Chili Peppers [Collectables] by Red Hot Chili Peppers ID: 188755
 
-playlists
+Playlists
 Red Hot Chili Peppers Collections created by 李和樸 ID: 3463282
 
-songs
+Songs
 Snow (Hey Oh) ID: 1869719
 Red Hot Chili Peppers - Higher Ground. ID: 26691377
 Snow ID: 26225815

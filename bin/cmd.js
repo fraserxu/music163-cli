@@ -14,7 +14,7 @@ else if (argv._[0] === 'search') {
     if (err) console.log(err)
     var data = res.result
 
-    console.log('artists')
+    console.log('Artists')
     if (data.artists) {
       data.artists.forEach(function(artist) {
         console.log(artist.name + ' ID: ' + artist.id)
@@ -22,7 +22,7 @@ else if (argv._[0] === 'search') {
     }
     console.log()
 
-    console.log('albums')
+    console.log('Albums')
     if (data.albums) {
       data.albums.forEach(function(album) {
         console.log(album.name + ' by ' + album.artist.name + ' ID: ' + album.id)
@@ -30,13 +30,13 @@ else if (argv._[0] === 'search') {
     }
     console.log()
 
-    console.log('playlists')
+    console.log('Playlists')
     data.playlists.forEach(function(playlist) {
       console.log(playlist.name + ' created by ' + playlist.creator.nickname + ' ID: ' + playlist.id)
     })
     console.log()
 
-    console.log('songs')
+    console.log('Songs')
     if (data.songs) {
       data.songs.forEach(function(song) {
         console.log(song.name + ' ID: ' + song.id)
@@ -76,7 +76,7 @@ else if (argv._[0] === 'search') {
     if (err) console.log(err)
     if (res.songs) {
       res.songs.forEach(function(song) {
-        console.log('song info: ' + song.artists[0].name + ' by ' + song.name + ' ' + song.mp3Url)
+        console.log('Song info: ' + song.artists[0].name + ' by ' + song.name + ' ' + song.mp3Url)
       })
     }
   })
@@ -155,11 +155,11 @@ function play(songs) {
   })
 
   player.on('playing', function(item) {
-    console.log('now playing ' + item.name + ' by ' + item.artist)
+    console.log('Now playing ' + item.name + ' by ' + item.artist)
   })
 
   player.on('playend', function(item) {
-    console.log('song:' + item.name + ' play done, switching to next one ...')
+    console.log('Song:' + item.name + ' play done, switching to next one ...')
   })
 
   player.on('error', function(err) {
