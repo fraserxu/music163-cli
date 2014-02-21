@@ -3,6 +3,8 @@ music163-cli
 
 A command line player to play cloud music from [music163](http://music.163.com/)
 
+> NetEase Cloud Music is equipped with what the co touts as an industry-leading music library in terms of song coverage and sound quality. Users have access to more than 1m songs streamed at up to 320kbit/s (the broadly accepted upper bound for MP3 sound quality), which are moreover free of charge.
+
 # example
 
 To search by keyword , type `music163 search "whatever"`:
