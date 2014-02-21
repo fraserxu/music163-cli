@@ -11,7 +11,7 @@ if (argv.h) usage(0)
 else if (argv._[0] === 'search') {
   var keyword = argv._[1]
   api.search(keyword, function(err, res) {
-    if (err) console.log(err)
+    if (err) return error(err)
     var data = res.result
 
     console.log('Artists')
@@ -46,7 +46,7 @@ else if (argv._[0] === 'search') {
 } else if (argv._[0] === 'album') {
   var id = argv._[1]
   api.album(id, function(err, res) {
-    if (err) console.log(err)
+    if (err) return error(err)
     console.log('Album "' + res.album.name + '" by "' + res.album.artist.name + '" list: ')
     res.album.songs.forEach(function(song) {
       console.log(song.artists[0].name + ' - ' + song.name + ' ID: ' + song.id)
@@ -55,7 +55,7 @@ else if (argv._[0] === 'search') {
 } else if (argv._[0] === 'playlist') {
   var id = argv._[1]
   api.playlist(id, function(err, res) {
-    if (err) console.log(err)
+    if (err) return error(err)
     console.log('Playlist by "' + res.result.creator.nickname + '" List: ')
     res.result.tracks.forEach(function(song) {
       console.log(song.artists[0].name + ' - ' + song.name + ' ID: ' + song.id)
@@ -64,7 +64,7 @@ else if (argv._[0] === 'search') {
 } else if (argv._[0] === 'dj') {
   var id = argv._[1]
   api.dj(id, function(err, res) {
-    if (err) console.log(err)
+    if (err) return error(err)
     console.log('DJ by "' + res.program.dj.nickname + '" List: ')
     res.program.songs.forEach(function(song) {
       console.log(song.artists[0].name + ' - ' + song.name + ': ' + song.mp3Url)
@@ -73,7 +73,7 @@ else if (argv._[0] === 'search') {
 } else if (argv._[0] === 'detail') {
   var id = argv._[1]
   api.detail(id, function(err, res) {
-    if (err) console.log(err)
+    if (err) return error(err)
     if (res.songs) {
       res.songs.forEach(function(song) {
         console.log('Song info: ' + song.artists[0].name + ' by ' + song.name + ' ' + song.mp3Url)
@@ -85,59 +85,23 @@ else if (argv._[0] === 'search') {
 
   var id = argv._[1]
   var type = argv.type || argv.t
-  var songs = []
 
-  if (type === 'album') {
-    api.album(id, function(err, res) {
-      if (err) console.log(err)
-      res.album.songs.forEach(function(song) {
-        songs.push({
-          name: song.name,
-          artist: song.artists[0].name,
-          src: song.mp3Url
-        })
-      })
-      play(songs)
-    })
-  } else if (type === 'playlist') {
-    api.playlist(id, function(err, res) {
-      if (err) console.log(err)
-      res.result.tracks.forEach(function(song) {
-        songs.push({
-          name: song.name,
-          artist: song.artists[0].name,
-          src: song.mp3Url
-        })
-      })
-      play(songs)
-    })
-  } else if (type === 'dj') {
-    api.dj(id, function(err, res) {
-      if (err) console.log(err)
-      res.program.songs.forEach(function(song) {
-        songs.push({
-          name: song.name,
-          artist: song.artists[0].name,
-          src: song.mp3Url
-        })
-      })
-      play(songs)
-    })
-  } else if (type === 'detail') {
-    api.detail(id, function(err, res) {
-      if (err) console.log(err)
-      res.songs.forEach(function(song) {
-        songs.push({
-          name: song.name,
-          artist: song.artists[0].name,
-          src: song.mp3Url
-        })
-      })
-      play(songs)
-    })
-  }
+  getList(type, function(err, songs) {
+    if (error) return error(err)
+    play(songs)
+  })
+
 } else if (argv._[0] === 'download') {
-  console.log('to be added...')
+  if (argv._.length < 2) return console.error('please set the type you want to play by \"-t TYPE \"')
+
+  var id = argv._[1]
+  var type = argv.type || argv.t
+
+  getList(type, function(err, songs) {
+    if (error) return error(err)
+    download(songs)
+  })
+
 } else usage(1)
 
 function usage(code) {
@@ -146,6 +110,66 @@ function usage(code) {
   rs.on('close', function() {
     if (code) process.exit(code)
   })
+}
+
+function getList(type, cb) {
+  var songs = []
+
+  if (type === 'album') {
+    api.album(id, function(err, res) {
+      if (err) cb(err)
+      res.album.songs.forEach(function(song) {
+        songs.push({
+          name: song.name,
+          artist: song.artists[0].name,
+          src: song.mp3Url
+        })
+      })
+      cb(null, songs)
+    })
+  } else if (type === 'playlist') {
+    api.playlist(id, function(err, res) {
+      if (err) cb(err)
+      res.result.tracks.forEach(function(song) {
+        songs.push({
+          name: song.name,
+          artist: song.artists[0].name,
+          src: song.mp3Url
+        })
+      })
+      cb(null, songs)
+    })
+  } else if (type === 'dj') {
+    api.dj(id, function(err, res) {
+      if (err) cb(err)
+      res.program.songs.forEach(function(song) {
+        songs.push({
+          name: song.name,
+          artist: song.artists[0].name,
+          src: song.mp3Url
+        })
+      })
+      cb(null, songs)
+    })
+  } else if (type === 'detail') {
+    api.detail(id, function(err, res) {
+      if (err) cb(err)
+      res.songs.forEach(function(song) {
+        songs.push({
+          name: song.name,
+          artist: song.artists[0].name,
+          src: song.mp3Url
+        })
+      })
+      cb(null, songs)
+    })
+  }
+}
+
+function error (err) {
+  if (!err) return
+  console.error(String(err))
+  process.exit(1)
 }
 
 function play(songs) {
@@ -163,6 +187,10 @@ function play(songs) {
   })
 
   player.on('error', function(err) {
-    console.log(err)
+    return error(err)
   })
+}
+
+function downloads(songs) {
+  console.log('to be implemented...')
 }
