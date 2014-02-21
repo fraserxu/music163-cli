@@ -1,14 +1,14 @@
 music163-cli
 ========
 
-A command line client for music163
+A command line player to play cloud music from [music163](http://music.163.com/)
 
 # example
 
 To search by keyword , type `music163 search "whatever"`:
 
 ```
-$ music163-cli music163 search "Red Hot Chili Peppers"
+$ music163 search "Red Hot Chili Peppers"
 
 Artists
 Red Hot Chili Peppers ID: 41927
