@@ -6,8 +6,10 @@ var Player = require('player')
 var fs = require('fs')
 var path = require('path')
 var hyperquest = require('hyperquest')
+var mkdirp = require('mkdirp')
 
 var argv = minimist(process.argv.slice(2))
+var HOME = process.env.HOME || process.env.USERPROFILE;
 
 if (argv.h) usage(0)
 else if (argv._[0] === 'search') {
@@ -98,10 +100,11 @@ else if (argv._[0] === 'search') {
 
   var id = argv._[1]
   var type = argv.type || argv.t
+  var dist = argv.dist || argv.d
 
-  getList(id, type, function(err, songs) {
+  getList(id, type, function(err, songs, dir) {
     if (err) return error(err)
-    download(songs)
+    download(songs, dist, dir)
   })
 
 } else usage(1)
@@ -115,12 +118,12 @@ function usage(code) {
 }
 
 function getList(id, type, cb) {
-
   var songs = []
 
   if (type === 'album') {
     api.album(id, function(err, res) {
       if (err) cb(err)
+      var name = res.album.name
       res.album.songs.forEach(function(song) {
         songs.push({
           name: song.name,
@@ -128,11 +131,12 @@ function getList(id, type, cb) {
           src: song.mp3Url
         })
       })
-      cb(null, songs)
+      cb(null, songs, name)
     })
   } else if (type === 'playlist') {
     api.playlist(id, function(err, res) {
       if (err) cb(err)
+      var name = res.result.name
       res.result.tracks.forEach(function(song) {
         songs.push({
           name: song.name,
@@ -140,11 +144,12 @@ function getList(id, type, cb) {
           src: song.mp3Url
         })
       })
-      cb(null, songs)
+      cb(null, songs, name)
     })
   } else if (type === 'dj') {
     api.dj(id, function(err, res) {
       if (err) cb(err)
+      var name = res.program.name
       res.program.songs.forEach(function(song) {
         songs.push({
           name: song.name,
@@ -152,7 +157,7 @@ function getList(id, type, cb) {
           src: song.mp3Url
         })
       })
-      cb(null, songs)
+      cb(null, songs, name)
     })
   } else if (type === 'detail') {
     api.detail(id, function(err, res) {
@@ -194,31 +199,37 @@ function play(songs, params) {
   })
 }
 
-function download(songs, dist) {
-  var dist = '/Users/fraserxu/Desktop'
+function download(songs, dist, dir) {
+  var dirName = path.join(HOME, dist, dir)
 
-  songs.forEach(function(song) {
-    var request = hyperquest.get(song.src)
-    var file = fs.createWriteStream(path.join(dist, song.name) + '.mp3')
+  mkdirp(dirName, function(err) {
+    if (err) return error(err)
+    console.log('Created folder: ', dirName)
 
-    request.on('response', function (res) {
-      console.log('Start to download song: ' + song.name + '.')
+    songs.forEach(function(song) {
+      var request = hyperquest.get(song.src)
+      var file = fs.createWriteStream(path.join(dirName, song.name) + '.mp3')
+
+      request.on('response', function (res) {
+        console.log('Start to download song: ' + song.name + '.')
+      })
+
+      request.on('error', function (res) {
+        console.log('There\'s an error while trying to download song:' + song.name + '.' )
+      })
+
+      request.on('data', function(data) {
+        file.write(data)
+      })
+
+      request.on('end', function() {
+        console.log('Finish downloading song: ' + song.name + '.')
+      })
+
+      file.on('error', function(err) {
+        error(err)
+      })
     })
 
-    request.on('error', function (res) {
-      console.log('There\'s an error while trying to download song:' + song.name + '.' )
-    })
-
-    request.on('data', function(data) {
-      file.write(data)
-    })
-
-    request.on('end', function() {
-      console.log('Finish downloading song: ' + song.name + '.')
-    })
-
-    file.on('error', function(err) {
-      error(err)
-    })
   })
 }
