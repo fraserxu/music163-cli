@@ -4,6 +4,8 @@ var minimist = require('minimist')
 var api = require('music163')
 var Player = require('player')
 var fs = require('fs')
+var path = require('path')
+var hyperquest = require('hyperquest')
 
 var argv = minimist(process.argv.slice(2))
 
@@ -86,8 +88,8 @@ else if (argv._[0] === 'search') {
   var id = argv._[1]
   var type = argv.type || argv.t
 
-  getList(type, function(err, songs) {
-    if (error) return error(err)
+  getList(id, type, function(err, songs) {
+    if (err) return error(err)
     play(songs)
   })
 
@@ -97,8 +99,8 @@ else if (argv._[0] === 'search') {
   var id = argv._[1]
   var type = argv.type || argv.t
 
-  getList(type, function(err, songs) {
-    if (error) return error(err)
+  getList(id, type, function(err, songs) {
+    if (err) return error(err)
     download(songs)
   })
 
@@ -112,7 +114,8 @@ function usage(code) {
   })
 }
 
-function getList(type, cb) {
+function getList(id, type, cb) {
+
   var songs = []
 
   if (type === 'album') {
@@ -172,8 +175,8 @@ function error (err) {
   process.exit(1)
 }
 
-function play(songs) {
-  var player = new Player(songs)
+function play(songs, params) {
+  var player = new Player(songs, params)
   player.play(function(err, player){
     console.log('Done playing all the songs!')
   })
@@ -191,6 +194,31 @@ function play(songs) {
   })
 }
 
-function downloads(songs) {
-  console.log('to be implemented...')
+function download(songs, dist) {
+  var dist = '/Users/fraserxu/Desktop'
+
+  songs.forEach(function(song) {
+    var request = hyperquest.get(song.src)
+    var file = fs.createWriteStream(path.join(dist, song.name) + '.mp3')
+
+    request.on('response', function (res) {
+      console.log('Start to download song: ' + song.name + '.')
+    })
+
+    request.on('error', function (res) {
+      console.log('There\'s an error while trying to download song:' + song.name + '.' )
+    })
+
+    request.on('data', function(data) {
+      file.write(data)
+    })
+
+    request.on('end', function() {
+      console.log('Finish downloading song: ' + song.name + '.')
+    })
+
+    file.on('error', function(err) {
+      error(err)
+    })
+  })
 }

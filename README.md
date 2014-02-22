@@ -33,7 +33,25 @@ And then you can play different types of list by add `-t TYPE`
 
 ```
 $ music163 play -t playlist 3406713
-$ music163 play -t album xxxxxx
+$ music163 play -t album 506627
+```
+
+Or you want to get the list of an album:
+```
+$ music163 album 506627
+
+Album "Ultimate Grammy Collection: Classic Country" by "Various Artists" list:
+Roger Miller - King Of The Road ID: 5159433
+
+...
+
+Dolly Parton - 9 To 5 ID: 5159447
+Willie Nelson - Always On My Mind ID: 5159448
+```
+
+And even download.
+```
+$ music163 download -t playlist 5159448
 ```
 
 # usage
