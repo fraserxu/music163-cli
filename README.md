@@ -7,7 +7,7 @@ A command line player to play cloud music from [music163](http://music.163.com/)
 
 # example
 
-To search by keyword , type `music163 search "whatever"`:
+To **search** by keyword , type `music163 search "whatever"`:
 
 ```
 $ music163 search "Red Hot Chili Peppers"
@@ -29,14 +29,14 @@ Snow ID: 26225815
 Havana Affair - Red Hot Chili Peppers ID: 5201198
 ```
 
-And then you can play different types of list by add `-t TYPE`
+And then you can **play** different types of list by add `-t TYPE`
 
 ```
 $ music163 play -t playlist 3406713
 $ music163 play -t album 506627
 ```
 
-Or you want to get the list of an album:
+Or you want to get the list of an **album**:
 ```
 $ music163 album 506627
 
@@ -49,7 +49,7 @@ Dolly Parton - 9 To 5 ID: 5159447
 Willie Nelson - Always On My Mind ID: 5159448
 ```
 
-And even download.
+And even **download**.
 ```
 $ music163 download -t playlist 5159448
 ```
@@ -77,8 +77,8 @@ usage:
   music163 detail ID
     Get song detail by ID
 
-  music163 download -t TYPE ID
-    Download song by type and ID
+  music163 download -t TYPE -d DIST ID
+    Download song by type and ID, and to DIST folder
 
 ```
 
