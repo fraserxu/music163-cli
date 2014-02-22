@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-
 var minimist = require('minimist')
 var api = require('music163')
-var Player = require('player')
 var fs = require('fs')
 var path = require('path')
 var hyperquest = require('hyperquest')
+var lame = require('lame')
+var Speaker = require('speaker')
 var mkdirp = require('mkdirp')
 
 var argv = minimist(process.argv.slice(2))
@@ -92,9 +92,10 @@ else if (argv._[0] === 'search') {
 
   getList(id, type, function(err, songs) {
     if (err) return error(err)
-    play(songs)
+    playList(songs, function() {
+      console.log('Finish playing all the songs.')
+    })
   })
-
 } else if (argv._[0] === 'download') {
   if (argv._.length < 2) return console.error('please set the type you want to play by \"-t TYPE \"')
 
@@ -106,7 +107,6 @@ else if (argv._[0] === 'search') {
     if (err) return error(err)
     download(songs, dist, dir)
   })
-
 } else usage(1)
 
 function usage(code) {
@@ -174,29 +174,55 @@ function getList(id, type, cb) {
   }
 }
 
-function error (err) {
-  if (!err) return
-  console.error(String(err))
-  process.exit(1)
+function playList(songs, cb) {
+  eachSeries(songs, play, function(err) {
+    if (err) return error(err)
+    cb(null)
+  })
 }
 
-function play(songs, params) {
-  var player = new Player(songs, params)
-  player.play(function(err, player){
-    console.log('Done playing all the songs!')
-  })
+function play(song, cb) {
+  console.log('Start playing song: ' + song.name + '.')
+  var request = hyperquest.get(song.src)
+    .pipe(new lame.Decoder())
+    .pipe(new Speaker())
+    .on('finish', function () {
+      console.log('Finished playing song: ' + song.name + '.')
+      cb(null)
+    })
 
-  player.on('playing', function(item) {
-    console.log('Now playing ' + item.name + ' by ' + item.artist)
+  request.on('error', function (res) {
+    console.log('There\'s an error while trying to play song:' + song.name + '.' )
+    cb(new Error(res))
   })
+}
 
-  player.on('playend', function(item) {
-    console.log('Song:' + item.name + ' play done, switching to next one ...')
-  })
-
-  player.on('error', function(err) {
-    return error(err)
-  })
+// ported from the async library
+// https://github.com/caolan/async/blob/master/lib/async.js#L127
+function eachSeries(arr, iterator, callback) {
+  callback = callback || function () {}
+  if (!arr.length) {
+      return callback()
+  }
+  var completed = 0
+  var iterate = function () {
+      iterator(arr[completed], function (err) {
+          if (err) {
+              callback(err)
+              callback = function () {}
+          }
+          else {
+              completed += 1
+              if (completed >= arr.length) {
+                  callback(null)
+              }
+              else {
+                  iterate()
+              }
+          }
+      })
+  }
+  iterate()
 }
 
 function download(songs, dist, dir) {
@@ -232,4 +258,10 @@ function download(songs, dist, dir) {
     })
 
   })
+}
+
+function error (err) {
+  if (!err) return
+  console.error(String(err))
+  process.exit(1)
 }
