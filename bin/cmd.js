@@ -13,6 +13,7 @@ var HOME = process.env.HOME || process.env.USERPROFILE;
 
 if (argv.h) usage(0)
 else if (argv._[0] === 'search') {
+  if (!argv._[1]) return error('Please add a keyword for search.')
   var keyword = argv._[1]
   api.search(keyword, function(err, res) {
     if (err) return error(err)
@@ -48,6 +49,7 @@ else if (argv._[0] === 'search') {
     }
   })
 } else if (argv._[0] === 'album') {
+  if (!argv._[1]) return error('Please add a album ID.')
   var id = argv._[1]
   api.album(id, function(err, res) {
     if (err) return error(err)
@@ -57,6 +59,7 @@ else if (argv._[0] === 'search') {
     })
   })
 } else if (argv._[0] === 'playlist') {
+  if (!argv._[1]) return error('Please add a playlist ID.')
   var id = argv._[1]
   api.playlist(id, function(err, res) {
     if (err) return error(err)
@@ -66,6 +69,7 @@ else if (argv._[0] === 'search') {
     })
   })
 } else if (argv._[0] === 'dj') {
+  if (!argv._[1]) return error('Please add a dj ID.')
   var id = argv._[1]
   api.dj(id, function(err, res) {
     if (err) return error(err)
@@ -75,6 +79,7 @@ else if (argv._[0] === 'search') {
     })
   })
 } else if (argv._[0] === 'detail') {
+  if (!argv._[1]) return error('Please add a song ID.')
   var id = argv._[1]
   api.detail(id, function(err, res) {
     if (err) return error(err)
