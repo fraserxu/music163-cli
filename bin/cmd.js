@@ -44,7 +44,7 @@ else if (argv._[0] === 'search') {
     console.log('Songs')
     if (data.songs) {
       data.songs.forEach(function(song) {
-        console.log(song.name + ' ID: ' + song.id)
+        console.log(song.name + ' by ' + song.artists[0].name + ' ID: ' + song.id)
       })
     }
   })
