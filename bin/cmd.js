@@ -23,7 +23,7 @@ else if (argv._[0] === 'search') {
     console.log(chalk.inverse.bold('Artists'))
     if (data.artists) {
       data.artists.forEach(function(artist) {
-        console.log(artist.name + ' ID: ' + artist.id)
+        console.log(artist.name + chalk.blue.italic(' ID: ') + artist.id)
       })
     }
     console.log()
@@ -31,21 +31,21 @@ else if (argv._[0] === 'search') {
     console.log(chalk.inverse.bold('Albums'))
     if (data.albums) {
       data.albums.forEach(function(album) {
-        console.log(album.name + ' by ' + album.artist.name + ' ID: ' + album.id)
+        console.log(album.name + chalk.blue.italic(' by ') + album.artist.name + chalk.blue.italic(' ID: ') + album.id)
       })
     }
     console.log()
 
     console.log(chalk.inverse.bold('Playlists'))
     data.playlists.forEach(function(playlist) {
-      console.log(playlist.name + ' created by ' + playlist.creator.nickname + ' ID: ' + playlist.id)
+      console.log(playlist.name + chalk.blue.italic(' created by ') + playlist.creator.nickname + chalk.blue.italic(' ID: ') + playlist.id)
     })
     console.log()
 
     console.log(chalk.inverse.bold('Songs'))
     if (data.songs) {
       data.songs.forEach(function(song) {
-        console.log(song.name + ' by ' + song.artists[0].name + ' ID: ' + song.id)
+        console.log(song.name + chalk.blue.italic(' by ') + song.artists[0].name + chalk.blue.italic(' ID: ') + song.id)
       })
     }
   })
@@ -91,7 +91,7 @@ else if (argv._[0] === 'search') {
     }
   })
 } else if (argv._[0] === 'play') {
-  if (argv._.length < 2) return console.error('please set the type you want to play by \"-t TYPE \"')
+  if (argv._.length < 2) return error('please set the type you want to play by \"-t TYPE \"')
 
   var id = argv._[1]
   var type = argv.type || argv.t
@@ -99,11 +99,11 @@ else if (argv._[0] === 'search') {
   getList(id, type, function(err, songs) {
     if (err) return error(err)
     playList(songs, function() {
-      console.log('Finish playing all the songs.')
+      console.log(chalk.green('Finish playing all the songs.'))
     })
   })
 } else if (argv._[0] === 'download') {
-  if (argv._.length < 2) return console.error('please set the type you want to play by \"-t TYPE \"')
+  if (argv._.length < 2) return error('please set the type you want to play by \"-t TYPE \"')
 
   var id = argv._[1]
   var type = argv.type || argv.t
@@ -188,17 +188,17 @@ function playList(songs, cb) {
 }
 
 function play(song, cb) {
-  console.log('Start playing song: ' + song.name + '.')
+  console.log(chalk.blue('Start playing song: ') + song.name + '.')
   var request = hyperquest.get(song.src)
     .pipe(new lame.Decoder())
     .pipe(new Speaker())
     .on('finish', function () {
-      console.log('Finished playing song: ' + song.name + '.')
+      console.log(chalk.blue('Finished playing song: ') + song.name + '.')
       cb(null)
     })
 
   request.on('error', function (res) {
-    console.log('There\'s an error while trying to play song:' + song.name + '.' )
+    error('There\'s an error while trying to play song:' + song.name + '.' )
     cb(new Error(res))
   })
 }
@@ -235,18 +235,18 @@ function download(songs, dist, dir) {
 
   mkdirp(dirName, function(err) {
     if (err) return error(err)
-    console.log('Created folder: ', dirName)
+    console.log(chalk.blue('Created folder: ', dirName))
 
     songs.forEach(function(song) {
       var request = hyperquest.get(song.src)
       var file = fs.createWriteStream(path.join(dirName, song.name) + '.mp3')
 
       request.on('response', function (res) {
-        console.log('Start to download song: ' + song.name + '.')
+        console.log(chalk.blue('Start to download song: ' + song.name + '.'))
       })
 
       request.on('error', function (res) {
-        console.log('There\'s an error while trying to download song:' + song.name + '.' )
+        console.log(chalk.red('There\'s an error while trying to download song:' + song.name + '.'))
       })
 
       request.on('data', function(data) {
@@ -254,7 +254,7 @@ function download(songs, dist, dir) {
       })
 
       request.on('end', function() {
-        console.log('Finish downloading song: ' + song.name + '.')
+        console.log(chalk.blue('Finish downloading song: ' + song.name + '.'))
       })
 
       file.on('error', function(err) {
