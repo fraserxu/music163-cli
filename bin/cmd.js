@@ -7,6 +7,7 @@ var hyperquest = require('hyperquest')
 var lame = require('lame')
 var Speaker = require('speaker')
 var mkdirp = require('mkdirp')
+var chalk = require('chalk')
 
 var argv = minimist(process.argv.slice(2))
 var HOME = process.env.HOME || process.env.USERPROFILE;
@@ -19,7 +20,7 @@ else if (argv._[0] === 'search') {
     if (err) return error(err)
     var data = res.result
 
-    console.log('Artists')
+    console.log(chalk.inverse.bold('Artists'))
     if (data.artists) {
       data.artists.forEach(function(artist) {
         console.log(artist.name + ' ID: ' + artist.id)
@@ -27,7 +28,7 @@ else if (argv._[0] === 'search') {
     }
     console.log()
 
-    console.log('Albums')
+    console.log(chalk.inverse.bold('Albums'))
     if (data.albums) {
       data.albums.forEach(function(album) {
         console.log(album.name + ' by ' + album.artist.name + ' ID: ' + album.id)
@@ -35,13 +36,13 @@ else if (argv._[0] === 'search') {
     }
     console.log()
 
-    console.log('Playlists')
+    console.log(chalk.inverse.bold('Playlists'))
     data.playlists.forEach(function(playlist) {
       console.log(playlist.name + ' created by ' + playlist.creator.nickname + ' ID: ' + playlist.id)
     })
     console.log()
 
-    console.log('Songs')
+    console.log(chalk.inverse.bold('Songs'))
     if (data.songs) {
       data.songs.forEach(function(song) {
         console.log(song.name + ' by ' + song.artists[0].name + ' ID: ' + song.id)
@@ -266,6 +267,6 @@ function download(songs, dist, dir) {
 
 function error (err) {
   if (!err) return
-  console.error(String(err))
+  console.error(chalk.red(String(err)))
   process.exit(1)
 }
