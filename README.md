@@ -1,5 +1,6 @@
 music163-cli
 ========
+[![NPM](https://nodei.co/npm/music163-cli.png)](https://nodei.co/npm/music163-cli/)
 
 A command line player to play cloud music from [music163](http://music.163.com/)
 
