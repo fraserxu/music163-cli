@@ -52,7 +52,7 @@ Willie Nelson - Always On My Mind ID: 5159448
 
 And even **download**.
 ```
-$ music163 download -t playlist 5159448
+$ music163 download -t playlist -d Desktop 5159448
 ```
 
 # usage
